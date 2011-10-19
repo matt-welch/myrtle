@@ -325,6 +325,20 @@ static void _myrtle_cmd_backward() {
 }
 
 /*--------------------------------------------------------------------------------------------------------------
+ * FUNCTION: _myrtle_cmd_diagonal()
+ * DESCR:    Performs the 'diagonal' command. There should be two integers following the word 'diagonal' in the
+ *           statement. This is the number of squares to move forward and down. If the numbers entered are negative,
+ *           they correspond to the opposite directions (backward, up - toward the origin)
+ * RETURNS:  Nothing.
+ * PSEUDOCODE:
+ *
+ *------------------------------------------------------------------------------------------------------------*/
+/*static void _myrtle_cmd_diagonal() {
+
+}*/
+
+
+/*--------------------------------------------------------------------------------------------------------------
  * FUNCTION: _myrtle_cmd_foward()
  * DESCR:    Performs the 'forward' command. There should be an integer following the word 'forward' in the
  *           statement. This is the number of squares to move forward. Note: if Myrtle reaches one of the edges
@@ -577,7 +591,7 @@ static void _myrtle_line_set(int n) {
  *           the edges of her world, she just stops.
  * RETURNS:  Nothing.
  *------------------------------------------------------------------------------------------------------------*/
-static void _myrtle_move(int squares) {
+/*static void _myrtle_move(int squares) {
 	if (_myrtle_dir_get() == DIR_NORTH) {
 		_myrtle_row_set(_myrtle_row_get() - squares);
 	} else if (_myrtle_dir_get() == DIR_EAST) {
@@ -587,8 +601,19 @@ static void _myrtle_move(int squares) {
 	} else {
 		_myrtle_col_set(_myrtle_col_get() - squares);
 	}
+}*/
+/* attempting to make myrtle "warp around" if she overlaps one side of the world, using modular arithmetic */
+static void _myrtle_move(int squares) {
+	if (_myrtle_dir_get() == DIR_NORTH) {
+		_myrtle_row_set( (_myrtle_row_get() - squares + MAX_WORLD_ROWS) % MAX_WORLD_ROWS);
+	} else if (_myrtle_dir_get() == DIR_EAST) {
+		_myrtle_col_set( (_myrtle_col_get() + squares + MAX_WORLD_COLS) % MAX_WORLD_COLS);
+	} else if (_myrtle_dir_get() == DIR_SOUTH) {
+		_myrtle_row_set( (_myrtle_row_get() + squares + MAX_WORLD_ROWS) % MAX_WORLD_ROWS);
+	} else {
+		_myrtle_col_set( (_myrtle_col_get() - squares + MAX_WORLD_COLS) % MAX_WORLD_COLS);
+	}
 }
-
 /*--------------------------------------------------------------------------------------------------------------
  * FUNCTION: _myrtle_pen_char_get()
  * DESCR:    Accessor function for the globals.penchar variable.
